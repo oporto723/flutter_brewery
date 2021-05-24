@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'beer.dart';
+import 'beerDetailView.dart';
 
 void main() {
   runApp(MyApp());
@@ -28,18 +30,37 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final List<Beer> beers = [
+    Beer(
+        'Motel',
+        'Hazy Pale Ale',
+        'This 5-hop Hazy Pale Ale is crisp and balanced with strong hints of lemon and a lingering citrusy-dry finish, perfect for your next trip Parkside… or wherever else you may end up for the night.',
+        40,
+        5.8,
+        'assets/images/motel.png'),
+    Beer(
+        'Dawn',
+        'Pilsner',
+        'A refreshing and sessionable pilsner that pays homage to traditional German style with sublime balance between malt and hop. Pairs well with white fish, roast chicken, pork, and sushi.',
+        25,
+        4.9,
+        'assets/images/dawn.png')
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: <Widget>[
-          Card(
+      body: ListView.builder(
+        itemCount: beers.length,
+        itemBuilder: (context, index) {
+          return Card(
             child: new InkWell(
               onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => BeerDetailView()));
                 print('Clicked');
               },
               child: Row(
@@ -50,55 +71,30 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.all(8),
                       width: 100,
                       height: 100,
-                      child: Image.asset('assets/images/motel.png'),
+                      child: Image.asset(beers[index].photo),
                     ),
                   ),
                   Expanded(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        Text('Motel',
+                        Text(beers[index].name,
                             style: TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.bold)),
-                        Text('Hazy Pale Ale')
+                        Text(beers[index].style)
                       ])),
                   Expanded(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [Text('IBU: 40'), Text('Alc: 5.8%')]))
+                          children: [
+                        Text('IBU: ' + (beers[index].ibu).toString()),
+                        Text('Vol: ' + (beers[index].vol).toString() + '%')
+                      ]))
                 ],
               ),
             ),
-          ),
-          Card(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    width: 100,
-                    height: 100,
-                    child: Image.asset('assets/images/dawn.png'),
-                  ),
-                ),
-                Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                      Text('Dawn',
-                          style: TextStyle(
-                              fontSize: 25, fontWeight: FontWeight.bold)),
-                      Text('Pilsner')
-                    ])),
-                Expanded(
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [Text('IBU: 25'), Text('Alc: 4.9%')]))
-              ],
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }
