@@ -59,8 +59,12 @@ class _MyHomePageState extends State<MyHomePage> {
           return Card(
             child: new InkWell(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => BeerDetailView()));
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BeerDetailView(beer: beers[index]),
+                  ),
+                );
                 print('Clicked');
               },
               child: Row(
